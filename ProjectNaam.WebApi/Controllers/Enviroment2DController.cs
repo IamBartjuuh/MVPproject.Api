@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProjectNaam.WebApi.Repository;
 using System;
@@ -7,6 +8,7 @@ namespace ProjectNaam.WebApi.Controllers;
 
 [ApiController]
 [Route("Enviroment2Ds")]
+[Authorize]
 public class Enviroment2DController : ControllerBase
 {
     private readonly Enviroment2DRepository _Enviroment2DRepository;
@@ -19,6 +21,7 @@ public class Enviroment2DController : ControllerBase
     }
 
     [HttpGet(Name = "ReadEnviroment2Ds")]
+    [Authorize]
     public async Task<ActionResult<IEnumerable<Enviroment2D>>> Get()
     {
         var Enviroment2Ds = await _Enviroment2DRepository.ReadAsync();
@@ -26,6 +29,7 @@ public class Enviroment2DController : ControllerBase
     }
 
     [HttpGet("{Enviroment2DId}", Name = "ReadEnviroment2D")]
+    [Authorize]
     public async Task<ActionResult<Enviroment2D>> Get(Guid Enviroment2DId)
     {
         var Enviroment2D = await _Enviroment2DRepository.ReadAsync(Enviroment2DId);
@@ -36,6 +40,7 @@ public class Enviroment2DController : ControllerBase
     }
 
     [HttpPost(Name = "CreateEnviroment2D")]
+    [Authorize]
     public async Task<ActionResult> Add(Enviroment2D Enviroment2D)
     {
         Enviroment2D.Id = Guid.NewGuid();
@@ -45,6 +50,7 @@ public class Enviroment2DController : ControllerBase
     }
 
     [HttpPut("{Enviroment2DId}", Name = "UpdateEnviroment2D")]
+    [Authorize]
     public async Task<ActionResult> Update(Guid Enviroment2DId, Enviroment2D newEnviroment2D)
     {
         var existingEnviroment2D = await _Enviroment2DRepository.ReadAsync(Enviroment2DId);
@@ -58,6 +64,7 @@ public class Enviroment2DController : ControllerBase
     }
 
     [HttpDelete("{Enviroment2DId}", Name = "DeleteEnviroment2DByDate")]
+    [Authorize]
     public async Task<IActionResult> Update(Guid Enviroment2DId)
     {
         var existingEnviroment2D = await _Enviroment2DRepository.ReadAsync(Enviroment2DId);
