@@ -7,7 +7,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace ProjectNaam.WebApi.Controllers;
 
 [ApiController]
-[Route("")]
+[Route("Environments")]
 [Authorize]
 public class Environment2DController : ControllerBase
 {
