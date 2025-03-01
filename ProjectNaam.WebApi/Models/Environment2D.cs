@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace ProjectNaam.WebApi;
-public class Enviroment2D
+public class Environment2D
 {
     [Required]
     public Guid Id { get; set; }
