@@ -21,7 +21,6 @@ public class Object2DController : ControllerBase
     }
 
     [HttpGet(Name = "ReadObject2Ds")]
-    [Authorize]
     public async Task<ActionResult<IEnumerable<Object2D>>> Get()
     {
         var Object2Ds = await _Object2DRepository.ReadAsync();
@@ -29,7 +28,6 @@ public class Object2DController : ControllerBase
     }
 
     [HttpGet("{Object2DId}", Name = "ReadObject2D")]
-    [Authorize]
     public async Task<ActionResult<Object2D>> Get(Guid Object2DId)
     {
         var Object2D = await _Object2DRepository.ReadAsync(Object2DId);
@@ -40,7 +38,6 @@ public class Object2DController : ControllerBase
     }
 
     [HttpPost(Name = "CreateObject2D")]
-    [Authorize]
     public async Task<ActionResult> Add(Object2D Object2D)
     {
         Object2D.Id = Guid.NewGuid();
@@ -50,7 +47,6 @@ public class Object2DController : ControllerBase
     }
 
     [HttpPut("{Object2DId}", Name = "UpdateObject2D")]
-    [Authorize]
     public async Task<ActionResult> Update(Guid Object2DId, Object2D newObject2D)
     {
         var existingObject2D = await _Object2DRepository.ReadAsync(Object2DId);
@@ -64,7 +60,6 @@ public class Object2DController : ControllerBase
     }
 
     [HttpDelete("{Object2DId}", Name = "DeleteObject2DByDate")]
-    [Authorize]
     public async Task<IActionResult> Update(Guid Object2DId)
     {
         var existingObject2D = await _Object2DRepository.ReadAsync(Object2DId);

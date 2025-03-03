@@ -11,8 +11,11 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 var sqlConnectionString = builder.Configuration["SqlConnectionString"];
-builder.Services.AddTransient<Object2DRepository, Object2DRepository>(o => new Object2DRepository(sqlConnectionString));
-builder.Services.AddTransient<Environment2DRepository, Environment2DRepository>(o => new Environment2DRepository(sqlConnectionString));
+if(sqlConnectionString != null)
+{
+    builder.Services.AddTransient<Object2DRepository, Object2DRepository>(o => new Object2DRepository(sqlConnectionString));
+    builder.Services.AddTransient<Environment2DRepository, Environment2DRepository>(o => new Environment2DRepository(sqlConnectionString));
+}
 
 builder.Services.AddAuthorization();
 builder.Services.AddIdentityApiEndpoints<IdentityUser>(options =>
@@ -21,11 +24,9 @@ builder.Services.AddIdentityApiEndpoints<IdentityUser>(options =>
     options.Password.RequiredLength = 10;
 })
 .AddRoles<IdentityRole>()
-.AddDapperStores(options =>
-{
-    options.ConnectionString = sqlConnectionString;
+.AddDapperStores(options => {
+    options.ConnectionString = builder.Configuration.GetConnectionString("DapperIdentity");
 });
-
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddTransient<IAuthenticationService, AspNetIdentityAuthenticationService>();
