@@ -482,3 +482,6 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+.vs/MVPproject.Api/v17/.suo
+.vs/MVPproject.Api/v17/DocumentLayout.backup.json
+.vs/MVPproject.Api/v17/DocumentLayout.json
