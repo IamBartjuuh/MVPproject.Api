@@ -25,7 +25,7 @@ builder.Services.AddIdentityApiEndpoints<IdentityUser>(options =>
 })
 .AddRoles<IdentityRole>()
 .AddDapperStores(options => {
-    options.ConnectionString = builder.Configuration.GetConnectionString("DapperIdentity");
+    options.ConnectionString = sqlConnectionString;
 });
 
 builder.Services.AddHttpContextAccessor();
