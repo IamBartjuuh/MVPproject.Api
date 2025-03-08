@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using ProjectNaam.WebApi.Repository;
+using ProjectNaam.WebApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,7 +29,7 @@ builder.Services.AddIdentityApiEndpoints<IdentityUser>(options =>
 });
 
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddTransient<IAuthenticationService, AspNetIdentityAuthenticationService>();
+builder.Services.AddTransient<ProjectNaam.WebApi.Services.IAuthenticationService, AspNetIdentityAuthenticationService>();
 
 var app = builder.Build();
 var sqlConnectionStringFound = !string.IsNullOrWhiteSpace(sqlConnectionString);

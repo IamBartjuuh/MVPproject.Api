@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
+using ProjectNaam.WebApi.Services;
 
 namespace ProjectNaam.WebApi.Repository
 {
@@ -26,6 +27,13 @@ namespace ProjectNaam.WebApi.Repository
             using (var sqlConnection = new SqlConnection(sqlConnectionString))
             {
                 return await sqlConnection.QuerySingleOrDefaultAsync<Environment2D>("SELECT * FROM [Environment2D] WHERE Id = @Id", new { id });
+            }
+        }
+        public async Task<Environment2D?> ReadForUserAsync(Guid id)
+        {
+            using (var sqlConnection = new SqlConnection(sqlConnectionString))
+            {
+                return await sqlConnection.QuerySingleOrDefaultAsync<Environment2D>("SELECT * FROM [Environment2D] WHERE OwnerUserId = @Id", new { id });
             }
         }
 

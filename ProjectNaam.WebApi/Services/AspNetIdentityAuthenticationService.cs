@@ -1,6 +1,6 @@
 using System.Security.Claims;
 
-
+namespace ProjectNaam.WebApi.Services;
 /// <summary>
 /// Based on the example code provided by Microsoft
 /// https://learn.microsoft.com/en-us/aspnet/core/fundamentals/http-context?view=aspnetcore-9.0&preserve-view=true

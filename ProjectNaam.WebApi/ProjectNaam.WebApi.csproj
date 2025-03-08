@@ -16,4 +16,8 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="9.0.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Repository\NewFolder\" />
+  </ItemGroup>
+
 </Project>

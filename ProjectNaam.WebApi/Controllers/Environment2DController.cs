@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProjectNaam.WebApi.Repository;
+using ProjectNaam.WebApi.Services;
 using System;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -13,9 +14,11 @@ public class Environment2DController : ControllerBase
 {
     private readonly Environment2DRepository _Environment2DRepository;
     private readonly ILogger<Environment2DController> _logger;
+    private readonly IAuthenticationService _authenticationService;
 
-    public Environment2DController(Environment2DRepository Environment2DRepository, ILogger<Environment2DController> logger)
+    public Environment2DController(Environment2DRepository Environment2DRepository, ILogger<Environment2DController> logger, IAuthenticationService authenticationService)
     {
+        _authenticationService = authenticationService;
         _Environment2DRepository = Environment2DRepository;
         _logger = logger;
     }
@@ -23,7 +26,8 @@ public class Environment2DController : ControllerBase
     [HttpGet(Name = "ReadEnvironment2Ds")]
     public async Task<ActionResult<IEnumerable<Environment2D>>> Get()
     {
-        var Environment2Ds = await _Environment2DRepository.ReadAsync();
+        Guid CurrentUser = Guid.Parse(_authenticationService.GetCurrentAuthenticatedUserId());
+        var Environment2Ds = await _Environment2DRepository.ReadForUserAsync(CurrentUser);
         return Ok(Environment2Ds);
     }
 
@@ -41,6 +45,8 @@ public class Environment2DController : ControllerBase
     public async Task<ActionResult> Add(Environment2D Environment2D)
     {
         Environment2D.Id = Guid.NewGuid();
+        var CurrentUser = _authenticationService.GetCurrentAuthenticatedUserId();
+        Environment2D.OwnerUserId = CurrentUser == null ? "" : CurrentUser;
 
         var createdEnvironment2D = await _Environment2DRepository.InsertAsync(Environment2D);
         return Created();
