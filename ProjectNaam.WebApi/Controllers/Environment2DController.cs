@@ -44,12 +44,22 @@ public class Environment2DController : ControllerBase
     [HttpPost(Name = "CreateEnvironment2D")]
     public async Task<ActionResult> Add(Environment2D Environment2D)
     {
-        Environment2D.Id = Guid.NewGuid();
-        var CurrentUser = _authenticationService.GetCurrentAuthenticatedUserId();
-        Environment2D.OwnerUserId = CurrentUser == null ? "" : CurrentUser;
+        Guid CurrentUser = Guid.Parse(_authenticationService.GetCurrentAuthenticatedUserId());
+        var Environment2Ds = await _Environment2DRepository.ReadForUserAsync(CurrentUser);
+        if(Environment2Ds.Count() >= 5)
+        {
+            return BadRequest();
+        } 
+        else
+        {
+            Environment2D.Id = Guid.NewGuid();
 
-        var createdEnvironment2D = await _Environment2DRepository.InsertAsync(Environment2D);
-        return Created();
+            Environment2D.OwnerUserId = _authenticationService.GetCurrentAuthenticatedUserId();
+
+            var createdEnvironment2D = await _Environment2DRepository.InsertAsync(Environment2D);
+            return Ok();
+        }
+
     }
 
     [HttpPut("{Environment2DId}", Name = "UpdateEnvironment2D")]

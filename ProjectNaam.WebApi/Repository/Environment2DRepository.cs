@@ -29,11 +29,11 @@ namespace ProjectNaam.WebApi.Repository
                 return await sqlConnection.QuerySingleOrDefaultAsync<Environment2D>("SELECT * FROM [Environment2D] WHERE Id = @Id", new { id });
             }
         }
-        public async Task<Environment2D?> ReadForUserAsync(Guid id)
+        public async Task<IEnumerable<Environment2D>> ReadForUserAsync(Guid id)
         {
             using (var sqlConnection = new SqlConnection(sqlConnectionString))
             {
-                return await sqlConnection.QuerySingleOrDefaultAsync<Environment2D>("SELECT * FROM [Environment2D] WHERE OwnerUserId = @Id", new { id });
+                return await sqlConnection.QueryAsync<Environment2D>("SELECT * FROM [Environment2D] WHERE OwnerUserId = @Id", new { id });
             }
         }
 
@@ -67,6 +67,5 @@ namespace ProjectNaam.WebApi.Repository
                 await sqlConnection.ExecuteAsync("DELETE FROM [Environment2D] WHERE Id = @Id", new { id });
             }
         }
-
     }
 }
