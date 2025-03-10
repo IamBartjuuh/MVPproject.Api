@@ -7,7 +7,9 @@ public class Object2D
     public Guid Id { get; set; }
 
     [Required]
-    public int EnviromentId { get; set; }
+    public Guid EnvironmentId { get; set; }
+    [Required]
+    public string PrefabId { get; set; }
 
     [Required]
     public double PositionX { get; set; }

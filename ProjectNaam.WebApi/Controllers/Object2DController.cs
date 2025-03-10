@@ -27,10 +27,10 @@ public class Object2DController : ControllerBase
         return Ok(Object2Ds);
     }
 
-    [HttpGet("{Object2DId}", Name = "ReadObject2D")]
-    public async Task<ActionResult<Object2D>> Get(Guid Object2DId)
+    [HttpGet("{Environment2DId}", Name = "ReadObject2D")]
+    public async Task<ActionResult<IEnumerable<Object2D>>> Get(Guid Environment2DId)
     {
-        var Object2D = await _Object2DRepository.ReadAsync(Object2DId);
+        var Object2D = await _Object2DRepository.ReadAsync(Environment2DId);
         if (Object2D == null)
             return NotFound();
 
@@ -41,7 +41,6 @@ public class Object2DController : ControllerBase
     public async Task<ActionResult> Add(Object2D Object2D)
     {
         Object2D.Id = Guid.NewGuid();
-
         var createdObject2D = await _Object2DRepository.InsertAsync(Object2D);
         return Created();
     }

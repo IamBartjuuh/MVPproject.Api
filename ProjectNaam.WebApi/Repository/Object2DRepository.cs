@@ -16,7 +16,7 @@ namespace ProjectNaam.WebApi.Repository
         {
             using (var sqlConnection = new SqlConnection(sqlConnectionString))
             {
-                var environmentId = await sqlConnection.ExecuteAsync("INSERT INTO [Object2D] (Id, EnviromentId, PositionX, PositionY, ScaleX, ScaleY, RotationY, SortingLayer) VALUES (@Id, @EnviromentId, @PositionX, @PositionY, @ScaleX, @ScaleY, @RotationY, @SortingLayer)", Object2D);
+                var object2ds = await sqlConnection.ExecuteAsync("INSERT INTO [Object2D] (Id, EnvironmentId, PrefabId, PositionX, PositionY, ScaleX, ScaleY, RotationZ, SortingLayer) VALUES (@Id, @EnvironmentId, @PrefabId, @PositionX, @PositionY, @ScaleX, @ScaleY, @RotationZ, @SortingLayer)", Object2D);
                 return Object2D;
             }
         }
@@ -25,7 +25,7 @@ namespace ProjectNaam.WebApi.Repository
         {
             using (var sqlConnection = new SqlConnection(sqlConnectionString))
             {
-                return await sqlConnection.QuerySingleOrDefaultAsync<Object2D>("SELECT * FROM [Object2D] WHERE Id = @Id", new { id });
+                return await sqlConnection.QuerySingleOrDefaultAsync<Object2D>("SELECT * FROM [Object2D] WHERE EnvironmentId = @Id", new { id });
             }
         }
 
