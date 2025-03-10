@@ -46,7 +46,16 @@ public class Environment2DController : ControllerBase
     {
         Guid CurrentUser = Guid.Parse(_authenticationService.GetCurrentAuthenticatedUserId());
         var Environment2Ds = await _Environment2DRepository.ReadForUserAsync(CurrentUser);
-        if(Environment2Ds.Count() >= 5)
+        bool NameExists = false;
+        foreach (Environment2D Test in Environment2Ds)
+        {
+            if (Test.Name == Environment2D.Name)
+            {
+                NameExists = true;
+                break;
+            }
+        }
+        if(Environment2Ds.Count() >= 5 || NameExists)
         {
             return BadRequest();
         } 
