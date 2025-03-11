@@ -46,7 +46,7 @@ public class Object2DController : ControllerBase
     }
 
     [HttpPut("{Object2DId}", Name = "UpdateObject2D")]
-    public async Task<ActionResult> Update(Guid Object2DId, Object2D newObject2D)
+    public async Task<ActionResult<Object2D>> Update(Guid Object2DId, Object2D newObject2D)
     {
         var existingObject2D = await _Object2DRepository.ReadAsync(Object2DId);
 
