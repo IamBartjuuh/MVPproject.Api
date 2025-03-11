@@ -37,14 +37,14 @@ namespace ProjectNaam.WebApi.Repository
             }
         }
 
-        public async Task UpdateAsync(Object2D environment)
+        public async Task UpdateAsync(Object2D object2D)
         {
             using (var sqlConnection = new SqlConnection(sqlConnectionString))
             {
                 await sqlConnection.ExecuteAsync("UPDATE [Object2D] SET " +
-                                                 "TemperatureC = @TemperatureC, " +
-                                                 "Summary = @Summary"
-                                                 , environment);
+                                                 "PositionX = @PositionX, " +
+                                                 "PositionY = @PositionY"
+                                                 , object2D);
 
             }
         }
