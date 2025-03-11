@@ -43,9 +43,9 @@ namespace ProjectNaam.WebApi.Repository
             {
                 await sqlConnection.ExecuteAsync("UPDATE [Object2D] SET " +
                                                  "PositionX = @PositionX, " +
-                                                 "PositionY = @PositionY"
+                                                 "PositionY = @PositionY " +
+                                                 "WHERE Id = @Id"
                                                  , object2D);
-
             }
         }
 
