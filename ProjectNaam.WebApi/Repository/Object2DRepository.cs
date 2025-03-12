@@ -1,9 +1,10 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
+using ProjectNaam.WebApi.Services;
 
 namespace ProjectNaam.WebApi.Repository
 {
-    public class Object2DRepository
+    public class Object2DRepository : IObjectService
     {
         private readonly string sqlConnectionString;
 

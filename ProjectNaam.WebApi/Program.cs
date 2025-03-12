@@ -13,8 +13,8 @@ builder.Services.AddOpenApi();
 var sqlConnectionString = builder.Configuration["SqlConnectionString"];
 if(sqlConnectionString != null)
 {
-    builder.Services.AddTransient<Object2DRepository, Object2DRepository>(o => new Object2DRepository(sqlConnectionString));
-    builder.Services.AddTransient<Environment2DRepository, Environment2DRepository>(o => new Environment2DRepository(sqlConnectionString));
+    builder.Services.AddTransient<IObjectService, Object2DRepository>(o => new Object2DRepository(sqlConnectionString));
+    builder.Services.AddTransient<IEnvironmentService, Environment2DRepository>(o => new Environment2DRepository(sqlConnectionString));
 }
 
 builder.Services.AddAuthorization();

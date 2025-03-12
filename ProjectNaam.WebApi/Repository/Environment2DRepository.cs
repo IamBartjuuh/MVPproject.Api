@@ -4,7 +4,7 @@ using ProjectNaam.WebApi.Services;
 
 namespace ProjectNaam.WebApi.Repository
 {
-    public class Environment2DRepository
+    public class Environment2DRepository : IEnvironmentService
     {
         private readonly string sqlConnectionString;
 

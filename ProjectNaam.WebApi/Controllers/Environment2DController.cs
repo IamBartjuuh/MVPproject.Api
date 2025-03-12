@@ -12,14 +12,14 @@ namespace ProjectNaam.WebApi.Controllers;
 [Authorize]
 public class Environment2DController : ControllerBase
 {
-    private readonly Environment2DRepository _Environment2DRepository;
+    private readonly IEnvironmentService _EnvironmentService;
     private readonly ILogger<Environment2DController> _logger;
     private readonly IAuthenticationService _authenticationService;
 
-    public Environment2DController(Environment2DRepository Environment2DRepository, ILogger<Environment2DController> logger, IAuthenticationService authenticationService)
+    public Environment2DController(IEnvironmentService EnvironmentService, ILogger<Environment2DController> logger, IAuthenticationService authenticationService)
     {
         _authenticationService = authenticationService;
-        _Environment2DRepository = Environment2DRepository;
+        _EnvironmentService = EnvironmentService;
         _logger = logger;
     }
 
@@ -27,14 +27,14 @@ public class Environment2DController : ControllerBase
     public async Task<ActionResult<IEnumerable<Environment2D>>> Get()
     {
         Guid CurrentUser = Guid.Parse(_authenticationService.GetCurrentAuthenticatedUserId());
-        var Environment2Ds = await _Environment2DRepository.ReadForUserAsync(CurrentUser);
+        var Environment2Ds = await _EnvironmentService.ReadForUserAsync(CurrentUser);
         return Ok(Environment2Ds);
     }
 
     [HttpGet("{Environment2DId}", Name = "ReadEnvironment2D")]
     public async Task<ActionResult<Environment2D>> Get(Guid Environment2DId)
     {
-        var Environment2D = await _Environment2DRepository.ReadAsync(Environment2DId);
+        var Environment2D = await _EnvironmentService.ReadAsync(Environment2DId);
         if (Environment2D == null)
             return NotFound();
 
@@ -45,14 +45,14 @@ public class Environment2DController : ControllerBase
     public async Task<ActionResult> Add(Environment2D Environment2D)
     {
         Guid CurrentUser = Guid.Parse(_authenticationService.GetCurrentAuthenticatedUserId());
-        var Environment2Ds = await _Environment2DRepository.ReadForUserAsync(CurrentUser);
+        var Environment2Ds = await _EnvironmentService.ReadForUserAsync(CurrentUser);
         bool NameExists = false;
         foreach (Environment2D Test in Environment2Ds)
         {
             if (Test.Name == Environment2D.Name)
             {
                 NameExists = true;
-                break;
+                return BadRequest();
             }
         }
         if(Environment2Ds.Count() >= 5 || NameExists)
@@ -65,7 +65,7 @@ public class Environment2DController : ControllerBase
 
             Environment2D.OwnerUserId = _authenticationService.GetCurrentAuthenticatedUserId();
 
-            var createdEnvironment2D = await _Environment2DRepository.InsertAsync(Environment2D);
+            var createdEnvironment2D = await _EnvironmentService.InsertAsync(Environment2D);
             return Ok();
         }
 
@@ -74,12 +74,12 @@ public class Environment2DController : ControllerBase
     [HttpPut("{Environment2DId}", Name = "UpdateEnvironment2D")]
     public async Task<ActionResult> Update(Guid Environment2DId, Environment2D newEnvironment2D)
     {
-        var existingEnvironment2D = await _Environment2DRepository.ReadAsync(Environment2DId);
+        var existingEnvironment2D = await _EnvironmentService.ReadAsync(Environment2DId);
 
         if (existingEnvironment2D == null)
             return NotFound();
 
-        await _Environment2DRepository.UpdateAsync(newEnvironment2D);
+        await _EnvironmentService.UpdateAsync(newEnvironment2D);
 
         return Ok(newEnvironment2D);
     }
@@ -87,12 +87,12 @@ public class Environment2DController : ControllerBase
     [HttpDelete("{Environment2DId}", Name = "DeleteEnvironment2DByDate")]
     public async Task<IActionResult> Update(Guid Environment2DId)
     {
-        var existingEnvironment2D = await _Environment2DRepository.ReadAsync(Environment2DId);
+        var existingEnvironment2D = await _EnvironmentService.ReadAsync(Environment2DId);
 
         if (existingEnvironment2D == null)
             return NotFound();
 
-        await _Environment2DRepository.DeleteAsync(Environment2DId);
+        await _EnvironmentService.DeleteAsync(Environment2DId);
 
         return Ok();
     }
