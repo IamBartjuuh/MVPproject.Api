@@ -85,7 +85,7 @@ public class Environment2DController : ControllerBase
     }
 
     [HttpDelete("{Environment2DId}", Name = "DeleteEnvironment2DByDate")]
-    public async Task<IActionResult> Update(Guid Environment2DId)
+    public async Task<ActionResult> Update(Guid Environment2DId)
     {
         var existingEnvironment2D = await _EnvironmentService.ReadAsync(Environment2DId);
 

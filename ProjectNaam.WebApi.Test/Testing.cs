@@ -33,7 +33,7 @@ namespace ProjectNaam.WebApi.Test
             // Act / Call
             var result = controller.Add(environment);
             // Assert
-            Assert.IsTrue(result.Result is OkResult);
+            Assert.IsInstanceOfType(result.Result, typeof(OkResult));
         }
 
         [TestMethod]
@@ -44,30 +44,30 @@ namespace ProjectNaam.WebApi.Test
             var authRepository = new Mock<IAuthenticationService>();
             // Arrange
 
-            //Fake User
+            //Fake User + Environment
             var userId = Guid.NewGuid().ToString();
+            var environmentId = Guid.NewGuid();
             authRepository.Setup(x => x.GetCurrentAuthenticatedUserId()).Returns(userId);
-
-            var controller = new Environment2DController(environmentRepository.Object, logger.Object, authRepository.Object);
             var environment = new Environment2D
             {
-                Id = Guid.NewGuid(),
+                Id = environmentId,
                 Name = "Test Environment",
                 MaxHeight = 10,
                 MaxLength = 10
             };
-            // Act
-            controller.Add(environment);
+            environmentRepository.Setup(x => x.ReadAsync(environmentId)).ReturnsAsync(environment);
+
+            var controller = new Environment2DController(environmentRepository.Object, logger.Object, authRepository.Object);
             var environmentUpdate = new Environment2D
             {
-                Id = environment.Id,
+                Id = environmentId,
                 Name = "Test Environment2",
                 MaxHeight = 100,
                 MaxLength = 100
             };
-            var result = controller.Update(environment.Id, environmentUpdate);
+            var result = controller.Update(environmentId, environmentUpdate);
             // Assert
-            Assert.IsNotNull(result);
+            Assert.IsInstanceOfType(result.Result, typeof(OkObjectResult));
         }
 
         [TestMethod]
@@ -78,23 +78,18 @@ namespace ProjectNaam.WebApi.Test
             var authRepository = new Mock<IAuthenticationService>();
             // Arrange
 
-            //Fake User
+            //Fake User + Environment
             var userId = Guid.NewGuid().ToString();
+            var enviromentId = Guid.NewGuid();
             authRepository.Setup(x => x.GetCurrentAuthenticatedUserId()).Returns(userId);
+            environmentRepository.Setup(x => x.ReadAsync(enviromentId)).ReturnsAsync(new Environment2D());
 
             var controller = new Environment2DController(environmentRepository.Object, logger.Object, authRepository.Object);
-            var environment = new Environment2D
-            {
-                Id = Guid.NewGuid(),
-                Name = "Test Environment",
-                MaxHeight = 10,
-                MaxLength = 10
-            };
-            // Act
-            controller.Add(environment);
-            var result = controller.Update(environment.Id);
+            var result = controller.Update(enviromentId);
             // Assert
-            Assert.IsNotNull(result);
+            Assert.IsInstanceOfType(result.Result, typeof(OkResult));
+            // Check if the delete method is called
+            environmentRepository.Verify(x => x.DeleteAsync(enviromentId), Times.Once);
         }
     }
 }
